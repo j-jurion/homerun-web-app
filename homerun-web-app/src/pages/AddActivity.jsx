@@ -4,6 +4,7 @@ import { getConfig } from '../http.js'
 
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import DurationInput from '../components/DurationInput.jsx';
 
 export default function AddActivity() {
     const [isFetchingConfig, setIsFetchingConfig] = useState(false);
@@ -42,19 +43,73 @@ export default function AddActivity() {
     }
 
     function handleSubmit(event) {
-        console.log("TEST")
         event.preventDefault();
-        console.log(data);
-      }
 
-      const Item = styled(Paper)(({ theme }) => ({
+        const fd = new FormData(event.target);
+        const acquisitionChannel = fd.getAll('acquisition');
+        console.log(acquisitionChannel)
+
+        // const data = Object.fromEntries(fd.entries());
+        const data = dataToValidRequestJSON(acquisitionChannel)
+
+        console.log(data);
+    }
+
+    function timeInputToSeconds(hours, minutes, seconds) {
+        return hours*60*60 + minutes*60 + seconds
+    }
+
+    function dataToValidRequestJSON(data) {
+        var json = {
+                "date": data[2],
+                "description": data[4],
+                "environment": data[15],
+                "name": data[3],
+                "type": data[0],
+                "results": [
+                  {
+                    "distance": data[5],
+                    "time": timeInputToSeconds(data[6], data[7], data[8]),
+                    "tracking_type": "personal"
+                  },
+                ],
+                "with_friends": data.length >= 17 ? true : false
+        };
+
+        if (data[1] === "training") {
+            json.training_type = data[14];
+        } else if (data[1] === "race") {
+            json.race_type = data[14];
+        }
+
+        if (data[9]) {
+            json.official = {
+                "distance": data[9],
+                "time": timeInputToSeconds(data[10], data[11], data[12]),
+                "tracking_type": "official",
+                "url": data[13]
+              };
+        }
+
+        return json;
+
+    }
+
+    const Item = styled(Paper)(({ theme }) => ({
         //backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         //...theme.typography.body2,
         padding: theme.spacing(1),
         margin: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-      }));
+    }));
+
+    function numericInputValidation(event) {
+        if (!/^\d*\.?\d*$/.test(event.key) && event.key !== "Backspace" && event.key !== "ArrowRight" && event.key !== "ArrowLeft" && event.key !== "Tab") {
+            event.preventDefault();
+        }
+    }
+    
 
     return (
     <>
@@ -62,10 +117,12 @@ export default function AddActivity() {
         {!config && <p>Loading ...</p>}
         {config && 
             <form onSubmit={handleSubmit}>
+                <fieldset>
                 <Grid container spacing={2}>
                     <Grid xs={3} item={true}>
                         <FormControl fullWidth>
                             <Select
+                                name="acquisition"
                                 id="demo-simple-select"
                                 value={activityType}
                                 label="type"
@@ -82,6 +139,7 @@ export default function AddActivity() {
                     <Grid xs={3} item={true}>
                         <FormControl fullWidth>
                             <Select
+                                name="acquisition"
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={activityEvent}
@@ -96,7 +154,7 @@ export default function AddActivity() {
                     </Grid>
                     <Grid xs={3} item={true}>
                         <FormControl fullWidth>
-                            <Input type='date' fullWidth defaultValue={defaultDate}/>
+                            <Input type='date' fullWidth defaultValue={defaultDate} name="acquisition"/>
                         </FormControl>
                     </Grid>
                     <Grid xs={4} item={true}>
@@ -105,10 +163,11 @@ export default function AddActivity() {
                             required
                             label="Activity Name"
                             variant="standard"
+                            name="acquisition"
                         />
                     </Grid>
                     <Grid xs={8} item={true}>
-                        <TextField label="Description" variant="standard" fullWidth/>
+                        <TextField label="Description" variant="standard" fullWidth name="acquisition"/>
                     </Grid>
 
                     <Grid xs={3} item={true}>
@@ -118,17 +177,16 @@ export default function AddActivity() {
                         <TextField 
                             fullWidth
                             required
-                            label="Distance"
+                            label={activityType === "swimming" ? "Distance (m)" : "Distance (km)"}
                             variant="standard"
+                            // type='number'
+                            step='any'
+                            onKeyDown={(event) => numericInputValidation(event)}
+                            name="acquisition"
                         />
                     </Grid>
                     <Grid xs={3} item={true}>
-                        <TextField 
-                            fullWidth
-                            required
-                            label="Time"
-                            variant="standard"
-                        />
+                        <DurationInput required name="acquisition"/>
                     </Grid>
                     <Grid xs={3} item={true}>
                     </Grid>
@@ -139,22 +197,23 @@ export default function AddActivity() {
                     <Grid xs={3} item={true}>
                         <TextField 
                             fullWidth
-                            label="Distance"
+                            label={activityType === "swimming" ? "Distance (m)" : "Distance (km)"}
                             variant="standard"
+                            onKeyDown={(event) => numericInputValidation(event)}
+                            // type='number'
+                            step='any'
+                            name="acquisition"
                         />
                     </Grid>
                     <Grid xs={3} item={true}>
-                        <TextField 
-                            fullWidth
-                            label="Time"
-                            variant="standard"
-                        />
+                        <DurationInput name="acquisition"/>
                     </Grid>
                     <Grid xs={3} item={true}>
                         <TextField 
                             fullWidth
                             label="URL"
                             variant="standard"
+                            name="acquisition"
                         />
                     </Grid>
                     
@@ -170,6 +229,7 @@ export default function AddActivity() {
                                         label="type"
                                         variant='standard'
                                         fullWidth
+                                        name="acquisition"
                                     >
                                         {config.training_type_running.map((type) => (
                                             <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -183,6 +243,7 @@ export default function AddActivity() {
                                         label="type"
                                         variant='standard'
                                         fullWidth
+                                        name="acquisition"
                                     >
                                         {config.training_type_swimming.map((type) => (
                                             <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -195,6 +256,7 @@ export default function AddActivity() {
                                         label="type"
                                         variant='standard'
                                         fullWidth
+                                        name="acquisition"
                                     >
                                         {config.race_type.map((type) => (
                                             <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -214,6 +276,7 @@ export default function AddActivity() {
                                     label="type"
                                     variant='standard'
                                     fullWidth
+                                    name="acquisition"
                                 >
                                     {config.terrain.map((type) => (
                                         <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -226,6 +289,7 @@ export default function AddActivity() {
                                     label="type"
                                     variant='standard'
                                     fullWidth
+                                    name="acquisition"
                                 >
                                     {config.pool.map((type) => (
                                         <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -236,11 +300,11 @@ export default function AddActivity() {
                     </Grid>
                     <Grid xs={3} item={true}>
                         <FormGroup>
-                            <FormControlLabel control={<Checkbox />} label="With Company" />
+                            <FormControlLabel control={<Checkbox name="acquisition"/>} label="With friends"/>
                         </FormGroup>
                     </Grid>
                 </Grid>
-
+                </fieldset>
 
                 <Button style={{margin: "2rem"}}>
                     Reset
