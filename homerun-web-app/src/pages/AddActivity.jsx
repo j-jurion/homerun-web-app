@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { getConfig } from '../http.js'
+import { getConfig, postActivity } from '../http.js'
 
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
@@ -53,6 +53,15 @@ export default function AddActivity() {
         const data = dataToValidRequestJSON(acquisitionChannel)
 
         console.log(data);
+        addActivity(data);
+    }
+
+    async function addActivity(activity) {
+        try {
+            await postActivity(activity);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     function timeInputToSeconds(hours, minutes, seconds) {
