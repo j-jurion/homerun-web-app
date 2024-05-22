@@ -17,6 +17,19 @@ export async function postActivity(activity) {
   return resData;
 }
 
+export async function getActivities(userId, type) {
+  console.log("fetching activities BUSY");
+  const response = await fetch(`http://127.0.0.1:8000/api/activities/${userId}/${type}/`);
+  const resData = await response.json();
+  console.log("fetching activities DONE");
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch activities');
+  }
+
+  return resData;
+}
+
 
 export async function getConfig() {
     console.log("fetching config BUSY")

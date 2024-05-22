@@ -6,6 +6,10 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import DurationInput from '../components/DurationInput.jsx';
 
+function timeInputToSeconds(hours, minutes, seconds) {
+    return parseInt(hours)*60*60 + parseInt(minutes)*60 + parseInt(seconds)
+}
+
 export default function AddActivity() {
     const [isFetchingConfig, setIsFetchingConfig] = useState(false);
     const [config, setConfig] = useState(null);
@@ -47,13 +51,12 @@ export default function AddActivity() {
 
         const fd = new FormData(event.target);
         const acquisitionChannel = fd.getAll('acquisition');
-        console.log(acquisitionChannel)
-
-        // const data = Object.fromEntries(fd.entries());
         const data = dataToValidRequestJSON(acquisitionChannel)
 
         console.log(data);
         addActivity(data);
+
+        //TODO: Clear form
     }
 
     async function addActivity(activity) {
@@ -61,12 +64,11 @@ export default function AddActivity() {
             await postActivity(activity);
         } catch (error) {
             console.log(error);
+            //TODO: Create error banner when request fails!
         }
     }
 
-    function timeInputToSeconds(hours, minutes, seconds) {
-        return hours*60*60 + minutes*60 + seconds
-    }
+
 
     function dataToValidRequestJSON(data) {
         var json = {
@@ -105,8 +107,6 @@ export default function AddActivity() {
     }
 
     const Item = styled(Paper)(({ theme }) => ({
-        //backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        //...theme.typography.body2,
         padding: theme.spacing(1),
         margin: theme.spacing(1),
         textAlign: 'center',
