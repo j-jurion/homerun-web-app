@@ -11,6 +11,7 @@ import { getActivities } from '../http.js'
 import ActivityTable from '../components/ActivityTable.jsx';
 import ActivityToggleButtons from '../components/ActivityToggleButtons.jsx';
 
+const USER_ID = 1;
 
 function timeToString(seconds) {
     return new Date(seconds * 1000).toISOString().slice(11, 19);
@@ -22,6 +23,16 @@ function speedToKmph(kilometersPerSeconds) {
 
 function paceToMin(seconds) {
     return new Date(seconds * 1000).toISOString().slice(14, 19);
+}
+
+async function getActivitiesForEachType(userId, activityTypes) {
+    let activities = [];
+    activityTypes = activityTypes.length === 0 ? ["running", "cycling", "swimming"] : activityTypes;
+    for (let i = 0; i < activityTypes.length; i++) {
+        activities.push(... await getActivities(userId, activityTypes[i]));
+    }
+    console.log(activities)
+    return activities;
 }
 
 const columns = [
@@ -105,7 +116,7 @@ export default function Activities() {
     const [activities, setActivities] = useState(null);
     const [error, setError] = useState();
 
-    const [showOfficalResults, setShowOfficalResults] = useState(true);
+    const [trackingType, setTrackingType] = useState("personal");
     const [cleanActivities, setCleanActivities] = useState(activities);
 
     const [activityTypes, setActivityTypes] = useState([]);
@@ -115,14 +126,14 @@ export default function Activities() {
     };
 
     const handleChangeOfficialResult = (event, newOfficialResult) => {
-        setShowOfficalResults(newOfficialResult);
+        setTrackingType(newOfficialResult ? "official" : "personal");
     };
 
     useEffect(() => {
         async function fetchActivities() {
             setIsFetchingActivities(true);
             try {
-                const activities = await getActivities(1, "running");
+                const activities = await getActivitiesForEachType(USER_ID, activityTypes);
                 setActivities(activities);
             } catch (error) {
                 setError({ message: error.message || 'Failed to fetch activities.' });
@@ -133,7 +144,7 @@ export default function Activities() {
         }
 
         fetchActivities();
-    }, []);
+    }, [activityTypes]);
 
 
 
@@ -144,7 +155,7 @@ export default function Activities() {
             activities.forEach(activity => {
                 let result = {};
                 activity.results.forEach((res) => {
-                    if (res.tracking_type === "personal") {
+                    if (res.tracking_type === trackingType) {
                         result = res;
                     }
                 })
@@ -162,7 +173,7 @@ export default function Activities() {
             });;
             setCleanActivities(tempActivities);
         }
-    }, [activities]);
+    }, [activities, trackingType]);
 
 
 
@@ -170,7 +181,7 @@ export default function Activities() {
         <h1>Activities</h1>
         <ActivityToggleButtons activityTypes={activityTypes} handleChangeActivityType={handleChangeActivityType}/>
         <FormGroup>
-            <FormControlLabel control={<Switch color="action" checked={showOfficalResults} onChange={handleChangeOfficialResult} />} label="Official Results" />
+            <FormControlLabel control={<Switch color="action" checked={trackingType==="official"} onChange={handleChangeOfficialResult} />} label="Official Results" />
         </FormGroup>
 
         {activities 
