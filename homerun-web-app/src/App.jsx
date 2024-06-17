@@ -7,6 +7,7 @@ import AddActivity from './pages/AddActivity';
 import EditActivity from './pages/EditActivity';
 import Statistics from './pages/Statistics';
 import { getActivity } from './http';
+import {HOME, ADD_ACTIVITY, EDIT_ACTIVITY, STATISTICS} from "./assets/routes"
 
 export async function activityIdLoader({params}) {
   const activity = await getActivity(params.activityId);
@@ -15,14 +16,14 @@ export async function activityIdLoader({params}) {
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: HOME,
     element: <RootLayout/>,
     errorElement: <></>,
     children: [
       {index: true, element: <Activities/>},
-      {path: 'add-activity', element: <AddActivity/>},
-      {path: 'edit-activity/:activityId', element: <EditActivity/>, loader: activityIdLoader},
-      {path: 'statistics', element: <Statistics/>},
+      {path: ADD_ACTIVITY, element: <AddActivity/>},
+      {path: `${EDIT_ACTIVITY}/:activityId`, element: <EditActivity/>, loader: activityIdLoader},
+      {path: STATISTICS, element: <Statistics/>},
     ]
   }
 ]);

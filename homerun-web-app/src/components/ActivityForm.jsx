@@ -11,7 +11,7 @@ function timeInputToSeconds(hours, minutes, seconds) {
 }
 
 export default function ActivityForm({activity, submitActivity}) {
-
+    console.log(activity)
     const [isFetchingConfig, setIsFetchingConfig] = useState(false);
     const [config, setConfig] = useState(null);
     const [error, setError] = useState();
@@ -312,17 +312,14 @@ export default function ActivityForm({activity, submitActivity}) {
                     </Grid>
                     <Grid xs={3} item={true}>
                         <FormGroup>
-                            <FormControlLabel control={<Checkbox name="acquisition"/>} label="With friends" defaultChecked={activity? activity.with_friends : false}/>
+                            <FormControlLabel control={<Checkbox name="acquisition" defaultChecked={activity? activity.with_friends : false}/>} label="With friends" />
                         </FormGroup>
                     </Grid>
                 </Grid>
                 </fieldset>
 
-                <Button style={{margin: "2rem"}}>
-                    Reset
-                </Button>
                 <Button  style={{margin: "2rem"}} type="submit" variant="contained">
-                    Submit
+                    Save
                 </Button>
 
             </form>
