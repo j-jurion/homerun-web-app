@@ -8,8 +8,8 @@ export default function ActivityToggleButtons({activityTypes, handleChangeActivi
             value={activityTypes}
             onChange={handleChangeActivityType}
             >
-            <ToggleButton value="running"><DirectionsRunIcon color="action"/> Running</ToggleButton>
-            <ToggleButton value="cycling"><DirectionsBikeIcon color="action"/> Cycling</ToggleButton>
-            <ToggleButton value="swimming"><PoolIcon color="action"/> Swimming</ToggleButton>
+            <ToggleButton value="running"><DirectionsRunIcon color="action"/></ToggleButton>
+            <ToggleButton value="cycling"><DirectionsBikeIcon color="action"/></ToggleButton>
+            <ToggleButton value="swimming"><PoolIcon color="action"/></ToggleButton>
         </ToggleButtonGroup>;
 }

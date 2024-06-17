@@ -7,9 +7,11 @@ import { Badge } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
-import { getActivities } from '../http.js'
+import { getActivities, deleteActivity } from '../http.js'
 import ActivityTable from '../components/ActivityTable.jsx';
 import ActivityToggleButtons from '../components/ActivityToggleButtons.jsx';
+import DeleteModal from '../components/modals/DeleteModal.jsx';
+import ErrorModal from '../components/modals/ErrorModal.jsx';
 
 const USER_ID = 1;
 
@@ -35,83 +37,91 @@ async function getActivitiesForEachType(userId, activityTypes) {
     return activities;
 }
 
-const columns = [
-    {
-      field: 'name',
-      headerName: 'Name',
-      width: 150,
-    },
-    {
-      field: 'date',
-      headerName: 'Date',
-      width: 100,
-    },
-    {
-      field: 'distance',
-      headerName: 'Distance (km)',
-      type: 'number',
-      width: 100,
-    },
-    {
-        field: 'time',
-        headerName: 'Time',
-        type: 'number',
-        width: 110,
-    },
-    {
-        field: 'pace',
-        headerName: 'Pace (min/km)',
-        type: 'number',
-        width: 110,
-    },
-    {
-        field: 'speed',
-        headerName: 'Speed (km/h)',
-        type: 'number',
-        width: 110,
-    },
-    {
-        field: 'training_type',
-        headerName: 'Intensity',
-        width: 110,
-    },
-    {
-        field: 'environment',
-        headerName: 'Environment',
-        width: 110,
-    },
-    {
-        field: "actions",
-        headerName: "Actions",
-        sortable: false,
-        renderCell: (params) => {
-        const onClickEdit = (e) => {
-           return;
-        };
-        const onClickRemove = (e) => {
-            return;
-         };
 
-        return <>
-            <Tooltip title="Edit">
-                <IconButton onClick={onClickEdit}>
-                    <EditIcon color="action"/>
-                </IconButton>
-                </Tooltip>
-                <Tooltip title="Remove">
-                <IconButton onClick={onClickRemove}>
-                    <DeleteIcon color="action"/>
-                </IconButton>
-            </Tooltip>
-            {/* <Badge badgeContent={"race"} color="primary">
-                <DeleteIcon color="action" />
-            </Badge> */}
-        </>;
-        }
-    },
-  ];
 
 export default function Activities() {
+    const columns = [
+        {
+          field: 'name',
+          headerName: 'Name',
+          width: 150,
+        },
+        {
+          field: 'date',
+          headerName: 'Date',
+          width: 100,
+        },
+        {
+          field: 'distance',
+          headerName: 'Distance (km)',
+          type: 'number',
+          width: 100,
+        },
+        {
+            field: 'time',
+            headerName: 'Time',
+            type: 'number',
+            width: 110,
+        },
+        {
+            field: 'pace',
+            headerName: 'Pace (min/km)',
+            type: 'number',
+            width: 110,
+        },
+        {
+            field: 'speed',
+            headerName: 'Speed (km/h)',
+            type: 'number',
+            width: 110,
+        },
+        {
+            field: 'training_type',
+            headerName: 'Intensity',
+            width: 110,
+        },
+        {
+            field: 'environment',
+            headerName: 'Environment',
+            width: 110,
+        },
+        {
+            field: "actions",
+            headerName: "Actions",
+            sortable: false,
+            renderCell: (params) => {
+            const onClickEdit = (e) => {
+               return;
+            };
+            const onClickRemove = (e) => {
+                async function removeActivity() {
+                    setSelectedActivity(params.id);
+                    handleOpenDeleteModal();
+                }
+                removeActivity();
+                
+             };
+    
+            return <>
+                <Tooltip title="Edit">
+                    <IconButton onClick={onClickEdit}>
+                        <EditIcon color="action"/>
+                    </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Remove">
+                    <IconButton onClick={() => onClickRemove(params)}>
+                        <DeleteIcon color="action"/>
+                    </IconButton>
+                </Tooltip>
+                {/* <Badge badgeContent={"race"} color="primary">
+                    <DeleteIcon color="action" />
+                </Badge> */}
+            </>;
+            }
+        },
+      ];
+
+
     const [isFetchingActivities, setIsFetchingActivities] = useState(true);
     const [activities, setActivities] = useState(null);
     const [error, setError] = useState();
@@ -120,6 +130,16 @@ export default function Activities() {
     const [cleanActivities, setCleanActivities] = useState(activities);
 
     const [activityTypes, setActivityTypes] = useState([]);
+
+    const [selectedActivity, setSelectedActivity] = useState(null);
+    
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+    const handleCloseDeleteModal = () => setOpenDeleteModal(false);
+
+    const handeActivitiesAfterDeletion = (activityId) => {
+        setActivities(activities.filter((a) => a.id != activityId));
+    }
 
     const handleChangeActivityType = (event, newActivityType) => {
         setActivityTypes(newActivityType);
@@ -179,6 +199,9 @@ export default function Activities() {
 
     return <>
         <h1>Activities</h1>
+        
+        <DeleteModal open={openDeleteModal} handleClose={handleCloseDeleteModal} activityId={selectedActivity} handeActivitiesAfterDeletion={handeActivitiesAfterDeletion}></DeleteModal>
+
         <ActivityToggleButtons activityTypes={activityTypes} handleChangeActivityType={handleChangeActivityType}/>
         <FormGroup>
             <FormControlLabel control={<Switch color="action" checked={trackingType==="official"} onChange={handleChangeOfficialResult} />} label="Official Results" />
