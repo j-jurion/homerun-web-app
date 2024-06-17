@@ -3,10 +3,9 @@ import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import PoolIcon from '@mui/icons-material/Pool';
 
-export default function ActivityToggleButtons({activityTypes, handleChangeActivityType}) {
+export default function ActivityToggleButtons(props) {
     return <ToggleButtonGroup
-            value={activityTypes}
-            onChange={handleChangeActivityType}
+            {...props}
             >
             <ToggleButton value="running"><DirectionsRunIcon color="action"/></ToggleButton>
             <ToggleButton value="cycling"><DirectionsBikeIcon color="action"/></ToggleButton>

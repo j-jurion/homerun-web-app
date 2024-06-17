@@ -15,11 +15,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import FastForwardIcon from '@mui/icons-material/FastForward';
+import {ACTIVITIES, ADD_ACTIVITY, STATISTICS} from "../assets/routes"
 
 const pages = [
-  {title: 'Activities', path: ''},
-  {title: 'Statistics', path: 'statistics'},
-  {title: 'Add Activity', path: 'add-activity'},
+  {title: 'Activities', path: ACTIVITIES},
+  {title: 'Statistics', path: STATISTICS},
+  {title: 'Add Activity', path: ADD_ACTIVITY},
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 

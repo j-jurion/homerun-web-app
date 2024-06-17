@@ -10,8 +10,7 @@ function timeInputToSeconds(hours, minutes, seconds) {
     return parseInt(hours)*60*60 + parseInt(minutes)*60 + parseInt(seconds)
 }
 
-export default function ActivityForm({activity, submitActivity}) {
-    console.log(activity)
+export default function ActivityForm({activity, handleDiscard, submitActivity}) {
     const [isFetchingConfig, setIsFetchingConfig] = useState(false);
     const [config, setConfig] = useState(null);
     const [error, setError] = useState();
@@ -318,6 +317,13 @@ export default function ActivityForm({activity, submitActivity}) {
                 </Grid>
                 </fieldset>
 
+                {activity ? 
+                    <Button style={{margin: "2rem"}} onClick={handleDiscard}>
+                        Discard
+                    </Button>
+                    : ""
+                }
+                
                 <Button  style={{margin: "2rem"}} type="submit" variant="contained">
                     Save
                 </Button>

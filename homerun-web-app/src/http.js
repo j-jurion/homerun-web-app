@@ -92,4 +92,17 @@ export async function getConfig() {
     }
   
     return resData;
+}
+
+export async function getStats(userId, type) {
+  console.log("fetching stats BUSY");
+  const response = await fetch(`http://127.0.0.1:8000/api/stats/${userId}/${type}/`);
+  const resData = await response.json();
+  console.log("fetching stats DONE");
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch stats');
   }
+
+  return resData;
+}

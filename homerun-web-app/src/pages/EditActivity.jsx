@@ -16,5 +16,9 @@ export default function EditActivity() {
         }
     }
 
-    return <ActivityForm activity={activity} submitActivity={editActivity}/>;
+    const discardChanges = () => {
+        navigate(ACTIVITIES);
+    }
+
+    return <ActivityForm activity={activity} handleDiscard={discardChanges} submitActivity={editActivity}/>;
 }

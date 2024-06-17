@@ -1,32 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import { Button, ToggleButtonGroup, ToggleButton, FormControlLabel, Switch, FormGroup } from '@mui/material';
+import { FormControlLabel, Switch, FormGroup } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Badge } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
-import { getActivities, deleteActivity } from '../http.js'
+import { getActivities } from '../http.js'
+import { timeToString, speedToKmph, paceToMin } from '../assets/converter'
+import { USER_ID } from '../assets/constants'
 import ActivityTable from '../components/ActivityTable.jsx';
 import ActivityToggleButtons from '../components/ActivityToggleButtons.jsx';
 import DeleteModal from '../components/modals/DeleteModal.jsx';
-import ErrorModal from '../components/modals/ErrorModal.jsx';
 
-const USER_ID = 1;
-
-function timeToString(seconds) {
-    return new Date(seconds * 1000).toISOString().slice(11, 19);
-}
-
-function speedToKmph(kilometersPerSeconds) {
-    return kilometersPerSeconds.toFixed(1);
-}
-
-function paceToMin(seconds) {
-    return new Date(seconds * 1000).toISOString().slice(14, 19);
-}
 
 async function getActivitiesForEachType(userId, activityTypes) {
     let activities = [];
@@ -36,8 +23,6 @@ async function getActivitiesForEachType(userId, activityTypes) {
     }
     return activities;
 }
-
-
 
 export default function Activities() {
     const navigate = useNavigate();
@@ -203,7 +188,7 @@ export default function Activities() {
         
         <DeleteModal open={openDeleteModal} handleClose={handleCloseDeleteModal} activityId={selectedActivity} handeActivitiesAfterDeletion={handeActivitiesAfterDeletion}></DeleteModal>
 
-        <ActivityToggleButtons activityTypes={activityTypes} handleChangeActivityType={handleChangeActivityType}/>
+        <ActivityToggleButtons value={activityTypes} onChange={handleChangeActivityType}/>
         <FormGroup>
             <FormControlLabel control={<Switch color="action" checked={trackingType==="official"} onChange={handleChangeOfficialResult} />} label="Official Results" />
         </FormGroup>
