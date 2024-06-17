@@ -1,15 +1,15 @@
 import ActivityForm from '../components/ActivityForm.jsx';
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { putActivity } from '../http.js'
 
 export default function EditActivity() {
     const { activity } = useLoaderData();
-    console.log(activity)
+    const navigate = useNavigate();
 
     async function editActivity(activity) {
-        console.log(activity);
         try {
             await putActivity(activity);
+            navigate(`/`);
         } catch (error) {
             console.log(error);
         }

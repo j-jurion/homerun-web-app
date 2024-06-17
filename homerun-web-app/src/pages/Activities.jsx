@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import { Button, ToggleButtonGroup, ToggleButton, FormControlLabel, Switch, FormGroup } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,13 +34,14 @@ async function getActivitiesForEachType(userId, activityTypes) {
     for (let i = 0; i < activityTypes.length; i++) {
         activities.push(... await getActivities(userId, activityTypes[i]));
     }
-    console.log(activities)
     return activities;
 }
 
 
 
 export default function Activities() {
+    const navigate = useNavigate();
+
     const columns = [
         {
           field: 'name',
@@ -91,7 +93,7 @@ export default function Activities() {
             sortable: false,
             renderCell: (params) => {
             const onClickEdit = (e) => {
-               return;
+                navigate(`/edit-activity/${params.id}`)
             };
             const onClickRemove = (e) => {
                 async function removeActivity() {
@@ -99,7 +101,6 @@ export default function Activities() {
                     handleOpenDeleteModal();
                 }
                 removeActivity();
-                
              };
     
             return <>

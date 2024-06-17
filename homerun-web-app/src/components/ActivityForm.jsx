@@ -54,7 +54,6 @@ export default function ActivityForm({activity, submitActivity}) {
         const acquisitionChannel = fd.getAll('acquisition');
         const data = dataToValidRequestJSON(acquisitionChannel)
 
-        console.log(data);
         submitActivity(data);
 
         //TODO: Clear form
@@ -146,6 +145,7 @@ export default function ActivityForm({activity, submitActivity}) {
                                 onChange={handleIsRace}
                                 variant='standard'
                                 fullWidth
+                                defaultValue={activity?.training_type}
 
                             >
                                 <MenuItem value="training">Training</MenuItem>
@@ -239,7 +239,8 @@ export default function ActivityForm({activity, submitActivity}) {
                                         label="type"
                                         variant='standard'
                                         fullWidth
-                                        defaultValue={activity? (activity?.race_type ? activity?.race_type : activity?.tracking_type) : config.training_type_running[0]}
+                                        name="acquisition"
+                                        defaultValue={activity? (activity?.race_type ? activity?.race_type : activity?.training_type) : config.training_type_running[0]}
                                     >
                                         {config.training_type_running.map((type) => (
                                             <MenuItem key={type} value={type}>{type}</MenuItem>

@@ -4,7 +4,6 @@ import { postActivity } from '../http.js'
 
 export default function AddActivity() {
     async function addActivity(activity) {
-        console.log(activity);
         try {
             await postActivity(activity);
         } catch (error) {
