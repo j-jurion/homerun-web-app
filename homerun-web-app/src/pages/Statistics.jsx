@@ -18,6 +18,8 @@ export default function Statistics() {
         setActivityType(newActivityType);
     };
 
+    console.log(stats)
+
     useEffect(() => {
         async function fetchStats() {
             setIsFetchingStats(true);
