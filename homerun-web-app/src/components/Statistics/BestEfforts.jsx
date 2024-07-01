@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { timeToString, speedToKmph, paceToMin } from '../../assets/converter'
+import Typography from '@mui/material/Typography';
 
 export default function BestEfforts ({ stats }) {
     const columns = [
@@ -65,12 +66,15 @@ export default function BestEfforts ({ stats }) {
     } 
 
     return <>
-        <p>Best efforts table</p>
-        <Box sx={{ height: 500, width: '100%' }}>
+        <Typography variant="h5" noWrap>Best Efforts</Typography>
+        <Box sx={{width: '100%' }}>
             <DataGrid
                 rows={stats? getRows() : []}
                 columns={columns}
                 disableRowSelectionOnClick
+                autoHeight
+                autoPageSize
+                hideFooter
             />
         </Box>
     </>

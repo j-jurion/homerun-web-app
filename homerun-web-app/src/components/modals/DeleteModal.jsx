@@ -1,6 +1,6 @@
 import { Button, Typography  } from "@mui/material";
 import ModalMessage from "./ModalMessage";
-import { deleteActivity } from '../../http.js'
+import { deleteActivity } from '../../assets/http.js'
 
 export default function DeleteModal({open, handleClose, activityId, handeActivitiesAfterDeletion}) {
 

@@ -3,11 +3,11 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { timeToString } from '../../assets/converter';
 
-export default function Monthly ({ stats }) {
+export default function Yearly ({ stats }) {
     const columns = [
         {
-            field: 'month',
-            headerName: 'Month',
+            field: 'year',
+            headerName: 'Year',
             width: 150,
         },
         {
@@ -30,18 +30,18 @@ export default function Monthly ({ stats }) {
 
     const getRows = () => {
         let rows = []
-        stats.monthly.forEach((month) => {
-            month.id = month.month
-            month.nbOfActivities = month.activities.length
-            month.total_time_formatted = timeToString(month.total_time)
-            rows.push(month)
+        stats.yearly.forEach((year) => {
+            year.id = year.year
+            year.nbOfActivities = year.activities.length
+            year.total_time_formatted = timeToString(year.total_time)
+            rows.push(year)
         })
-        return rows.sort((a, b) => a.month < b.month)
+        return rows.sort((a, b) => a.year < b.year)
 
     } 
 
     return <>
-        <Typography variant="h5" noWrap>Monthly</Typography>
+        <Typography variant="h5" noWrap>Yearly</Typography>
         <Box sx={{ width: '100%' }}>
             <DataGrid
                 rows={stats? getRows() : []}

@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
-import { getActivities } from '../http.js'
+import { getActivities } from '../assets/http.js'
 import { timeToString, speedToKmph, paceToMin } from '../assets/converter'
 import { USER_ID } from '../assets/constants'
 import ActivityTable from '../components/ActivityTable.jsx';

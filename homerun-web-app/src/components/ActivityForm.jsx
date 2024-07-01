@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { getConfig, postActivity, putActivity } from '../http.js'
+import { getConfig, postActivity, putActivity } from '../assets/http.js'
 
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';

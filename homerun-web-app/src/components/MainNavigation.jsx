@@ -20,7 +20,7 @@ import {ACTIVITIES, ADD_ACTIVITY, STATISTICS} from "../assets/routes"
 const pages = [
   {title: 'Activities', path: ACTIVITIES},
   {title: 'Statistics', path: STATISTICS},
-  {title: 'Add Activity', path: ADD_ACTIVITY},
+  {title: '+ Add Activity', path: ADD_ACTIVITY},
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -106,7 +106,13 @@ export default function MainNavigation() {
                     <NavLink
                       key={page.title}
                       to={page.path}
-                      style={{ textDecoration: 'none', color: 'white' }}
+                      style={({ isActive }) => {
+                        return {
+                          fontWeight: isActive ? "bold" : "",
+                          textDecoration: 'none',
+                          color: "white",
+                        };
+                      }}
                     >
                         {page.title}
                     </NavLink></Typography>
@@ -115,7 +121,7 @@ export default function MainNavigation() {
             </Menu>
           </Box>
 
-          {/* Small window */}
+          {/* Large window */}
           <FastForwardIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -140,11 +146,19 @@ export default function MainNavigation() {
               <NavLink
                 key={page.title}
                 to={page.path}
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', color: "white" }}
               >
-                <Button sx={{color: 'white', display: 'block' }}>
-                  {page.title}
-                </Button>
+                {({ isActive }) => (
+                  isActive?
+                    <Button sx={{ fontWeight: 'bold', color: 'white', display: 'block' }} variant={page.path === ADD_ACTIVITY? "contained": "text"}>
+                      {page.title}
+                    </Button>
+                    :
+                    <Button sx={{ color: 'white', display: 'block' }} variant={page.path === ADD_ACTIVITY? "contained": "text"}>
+                      {page.title}
+                    </Button>
+                )}
+                
               </NavLink>
             ))}
           </Box>

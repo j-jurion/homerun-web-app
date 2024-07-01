@@ -1,29 +1,26 @@
 import Typography from '@mui/material/Typography';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { axisClasses } from '@mui/x-charts/ChartsAxis';
-
-import { timeToString } from '../../assets/converter'
 
 
-export default function TimeGraph ({ stats, showYearly }) {
-    const valueFormatter = (value) => `${timeToString(value)}`;
+export default function DistanceGraph ({ stats, showYearly }) {
+    const valueFormatter = (value) => `${value} km`;
    
     const chartSetting = {
         yAxis: [
           {
-            label: '',valueFormatter
+            label: 'Distance (km)'
           },
         ],
         width: 500,
-        height: 300,
+        height: 300
       };
 
 
 
     return <>
-        <Typography variant="h5" noWrap>Time Chart</Typography>
+        <Typography variant="h5" noWrap>Distance Chart</Typography>
         {
-          showYearly ?
+          showYearly?
             <BarChart
                 dataset={stats.yearly}
                 xAxis={[{ scaleType: 'band', dataKey: 'year' }]}
@@ -32,16 +29,15 @@ export default function TimeGraph ({ stats, showYearly }) {
                 ]}
                 {...chartSetting}
             />
-            :
+          :
             <BarChart
                 dataset={stats.monthly}
                 xAxis={[{ scaleType: 'band', dataKey: 'month' }]}
                 series={[
-                    { dataKey: 'total_time', valueFormatter, color: "#208a3c" },
+                    { dataKey: 'total_distance', valueFormatter, color: "#208a3c"},
                 ]}
                 {...chartSetting}
             />
         }
-        
     </>
 }

@@ -1,6 +1,6 @@
 import ActivityForm from '../components/ActivityForm.jsx';
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { putActivity } from '../http.js'
+import { putActivity } from '../assets/http.js'
 import { ACTIVITIES } from '../assets/routes.js';
 
 export default function EditActivity() {

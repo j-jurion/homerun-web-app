@@ -1,7 +1,7 @@
 import ActivityForm from '../components/ActivityForm.jsx';
 import { useLoaderData, useNavigate } from "react-router-dom";
 
-import { postActivity } from '../http.js'
+import { postActivity } from '../assets/http.js'
 import { ACTIVITIES } from '../assets/routes.js';
 
 

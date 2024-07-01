@@ -6,7 +6,7 @@ import RootLayout from './pages/Root';
 import AddActivity from './pages/AddActivity';
 import EditActivity from './pages/EditActivity';
 import Statistics from './pages/Statistics';
-import { getActivity } from './http';
+import { getActivity } from './assets/http';
 import {HOME, ADD_ACTIVITY, EDIT_ACTIVITY, STATISTICS} from "./assets/routes"
 
 export async function activityIdLoader({params}) {
@@ -30,7 +30,13 @@ const router = createBrowserRouter([
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark'
+    mode: 'dark',
+    primary: {
+      main: '#208a3c'
+    },
+    secondary: {
+      main: '#145926'
+    }
   },
 });
 
