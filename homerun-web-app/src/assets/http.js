@@ -1,6 +1,6 @@
 export async function postActivity(activity) {
   console.log("posting activity BUSY");
-  const response = await fetch('http://127.0.0.1:8000/api/activities/1/', {
+  const response = await fetch(`http://127.0.0.1:8000/api/activities/1/`, {
     method: 'POST',
     body: JSON.stringify(activity),
     headers: {
@@ -19,7 +19,7 @@ export async function postActivity(activity) {
 
 export async function putActivity(activity) {
   console.log("putting activity BUSY");
-  const response = await fetch('http://127.0.0.1:8000/api/activities/1/', {
+  const response = await fetch(`http://127.0.0.1:8000/api/activities/1/`, {
     method: 'PUT',
     body: JSON.stringify(activity),
     headers: {
@@ -102,6 +102,52 @@ export async function getStats(userId, type) {
 
   if (!response.ok) {
     throw new Error('Failed to fetch stats');
+  }
+
+  return resData;
+}
+
+export async function getEvents(userId, type) {
+  console.log("fetching events BUSY");
+  const response = await fetch(`http://127.0.0.1:8000/api/events/${userId}/${type}/`);
+  const resData = await response.json();
+  console.log("fetching events DONE");
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch events');
+  }
+
+  return resData;
+}
+
+export async function postEvent(event) {
+  console.log("posting event BUSY");
+  console.log(JSON.stringify(event));
+  const response = await fetch(`http://127.0.0.1:8000/api/events/1/`, {
+    method: 'POST',
+    body: JSON.stringify(event),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const resData = await response.json();
+  console.log("posting event DONE")
+
+  if (!response.ok) {
+    throw new Error('Failed to add event.');
+  }
+
+  return resData;
+}
+
+export async function getTraining(userId, type) {
+  console.log("fetching training BUSY");
+  const response = await fetch(`http://127.0.0.1:8000/api/training/${userId}/${type}/`);
+  const resData = await response.json();
+  console.log("fetching training DONE");
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch training');
   }
 
   return resData;

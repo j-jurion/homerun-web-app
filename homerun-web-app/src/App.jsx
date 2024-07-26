@@ -6,8 +6,10 @@ import RootLayout from './pages/Root';
 import AddActivity from './pages/AddActivity';
 import EditActivity from './pages/EditActivity';
 import Statistics from './pages/Statistics';
+import Planning from './pages/Planning';
 import { getActivity } from './assets/http';
-import {HOME, ADD_ACTIVITY, EDIT_ACTIVITY, STATISTICS} from "./assets/routes"
+import {HOME, ADD_ACTIVITY, EDIT_ACTIVITY, STATISTICS, PLANNING, ADD_EVENT} from "./assets/routes"
+import AddEvent from './pages/AddEvent';
 
 export async function activityIdLoader({params}) {
   const activity = await getActivity(params.activityId);
@@ -24,6 +26,8 @@ const router = createBrowserRouter([
       {path: ADD_ACTIVITY, element: <AddActivity/>},
       {path: `${EDIT_ACTIVITY}/:activityId`, element: <EditActivity/>, loader: activityIdLoader},
       {path: STATISTICS, element: <Statistics/>},
+      {path: PLANNING, element: <Planning/>},
+      {path: ADD_EVENT, element: <AddEvent/>},
     ]
   }
 ]);

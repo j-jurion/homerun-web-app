@@ -4,11 +4,11 @@ import ActivityToggleButtons from '../components/ActivityToggleButtons.jsx';
 
 import PropTypes from 'prop-types';
 import { USER_ID } from '../assets/constants'
-import BestEfforts from '../components/Statistics/BestEfforts.jsx';
-import Monthly from '../components/Statistics/Monthly.jsx';
-import TimeGraph from '../components/Statistics/TimeGraph.jsx';
-import DistanceGraph from '../components/Statistics/DistanceGraph.jsx';
-import Yearly from '../components/Statistics/Yearly.jsx';
+import BestEfforts from '../components/statistics/BestEfforts.jsx';
+import Monthly from '../components/statistics/Monthly.jsx';
+import TimeGraph from '../components/statistics/TimeGraph.jsx';
+import DistanceGraph from '../components/statistics/DistanceGraph.jsx';
+import Yearly from '../components/statistics/Yearly.jsx';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { getStats } from '../assets/http.js';
 
